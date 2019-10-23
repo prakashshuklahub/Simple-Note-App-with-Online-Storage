@@ -1,6 +1,7 @@
 package com.languagexx.simplenotes
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,30 +13,40 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.languagexx.simplenotes.adapter.NoteAdapter
 import com.languagexx.simplenotes.adapter.NoteAdapter.RecycleClick
 import com.languagexx.simplenotes.entity.Note
 import com.languagexx.simplenotes.viewmodel.ViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.note_items.*
 
-class MainActivity : AppCompatActivity() , RecycleClick{
+class MainActivity :AppCompatActivity() , RecycleClick {
 
     //REQUEST_CODE_ADD
-    companion object{
+    companion object {
         val add = 1
         val edit = 2
     }
 
     //Object declaration
-    lateinit var viewModel:ViewModel
-    lateinit var noteAdapeter:NoteAdapter
-    lateinit var getAllNotes:LiveData<List<Note>>
+    lateinit var viewModel: ViewModel
+    lateinit var noteAdapeter: NoteAdapter
+    lateinit var getAllNotes: LiveData<List<Note>>
     lateinit var allNotes: List<Note>
+    private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var databaseReference: DatabaseReference
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //Firebase Database
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        firebaseDatabase.setPersistenceEnabled(true)
+        databaseReference = firebaseDatabase.getReference("Prakash")
+        databaseReference.keepSynced(true)
 
         //Swipe recycler view items on RIGHT
         val helper by lazy {
@@ -52,8 +63,11 @@ class MainActivity : AppCompatActivity() , RecycleClick{
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     var position = viewHolder.adapterPosition
+                    var note = allNotes.get(position)
+                    var id = note.id
                     viewModel.delete(allNotes.get(position))
-                    Toast.makeText(applicationContext,"Note Deleted",Toast.LENGTH_SHORT).show()
+                    databaseReference.child(id.toString()).removeValue()
+                    Toast.makeText(applicationContext, "Note Deleted", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -90,21 +104,21 @@ class MainActivity : AppCompatActivity() , RecycleClick{
         val note = noteAdapeter.getNoteAt(position)
         val id = note.id
 
-        var editIntent = Intent(this,EditActivity::class.java)
-        var title  = note.title
+        var editIntent = Intent(this, EditActivity::class.java)
+        var title = note.title
         var description = note.description
         var tag = note.tag
         var color = note.color
 
-        editIntent.putExtra("title",title)
-        editIntent.putExtra("description",description)
-        editIntent.putExtra("tag",tag)
-        editIntent.putExtra("id",id.toString())
-        editIntent.putExtra("color",color.toString())
+        editIntent.putExtra("title", title)
+        editIntent.putExtra("description", description)
+        editIntent.putExtra("tag", tag)
+        editIntent.putExtra("id", id.toString())
+        editIntent.putExtra("color", color.toString())
 
         startActivityForResult(editIntent, edit)
 
-        Log.e("MainActivityclick",title+description+tag+position)
+        Log.e("MainActivityclick", title + description + tag + position)
 
     }
 
@@ -119,8 +133,16 @@ class MainActivity : AppCompatActivity() , RecycleClick{
             var tag = data?.getStringExtra("tag")
             var color = data?.getStringExtra("color")
             val note = Note(0,title.toString(),description.toString(),color.toString(),tag.toString())
-            viewModel.insert(note)
-            Toast.makeText(applicationContext,"Note Saved",Toast.LENGTH_SHORT).show()
+            val id:Long? = viewModel.insert(note)
+            if (id!=null){
+                val note = Note(id.toInt(),title.toString(),description.toString(),color.toString(),tag.toString())
+                databaseReference.child(id.toString()).setValue(note)
+                Toast.makeText(applicationContext,"Note Saved",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(applicationContext,"Note not Saved",Toast.LENGTH_SHORT).show()
+            }
+
+
         }
         if(requestCode== edit&&resultCode== Activity.RESULT_OK){
 
@@ -132,6 +154,7 @@ class MainActivity : AppCompatActivity() , RecycleClick{
             Toast.makeText(applicationContext,"Note Updated",Toast.LENGTH_SHORT).show()
             val note  = Note(id?.toInt()!!,title.toString(),description.toString(),color.toString(),tag.toString())
             viewModel.update(note)
+            databaseReference.child(id.toString()).setValue(note)
         }
 
     }

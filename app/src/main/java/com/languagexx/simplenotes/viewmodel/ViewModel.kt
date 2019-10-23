@@ -12,8 +12,8 @@ class ViewModel(app:Application):AndroidViewModel(app) {
 
     //Database Operations in view model
 
-    fun insert(note: Note){
-        repository.insert(note)
+    fun insert(note: Note):Long?{
+        return repository.insert(note)
     }
 
     fun delete(note: Note){

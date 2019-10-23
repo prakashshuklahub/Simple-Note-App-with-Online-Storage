@@ -13,8 +13,8 @@ class Repository(app:Application) {
     var noteDao:NoteDao? = NoteDatabase.getDatabase(app)?.noteDao()
 
     //function to insert note in database
-    fun insert(note: Note){
-      insertAsync(noteDao).execute(note)
+    fun insert(note: Note): Long? {
+        return insertAsync(noteDao).execute(note).get()
     }
 
     //function to delete note in database
@@ -33,10 +33,10 @@ class Repository(app:Application) {
     }
 
     //background operation to insert note
-    class insertAsync(noteDao: NoteDao?):AsyncTask<Note,Void,Unit>(){
+    class insertAsync(noteDao: NoteDao?):AsyncTask<Note,Void,Long?>(){
         var noteDao = noteDao
-        override fun doInBackground(vararg params: Note){
-            noteDao?.insert(params[0])
+        override fun doInBackground(vararg params: Note): Long? {
+            return noteDao?.insert(params[0])
         }
     }
 
@@ -58,6 +58,7 @@ class Repository(app:Application) {
 
     //background operation to get all nots
     class getAllNotesAsync(noteDao: NoteDao?):AsyncTask<Unit,Void,LiveData<List<Note>>>(){
+
         var noteDao = noteDao
         override fun doInBackground(vararg params: Unit?): LiveData<List<Note>>? {
             return noteDao?.getAllNotes()
