@@ -10,4 +10,15 @@ it update the data in firebase database 🧰
 
 <img src="app/src/main/res/drawable/Phone%20Screenshot%201.jpg" width="250" >   <img src="app/src/main/res/drawable/Phone%20Screenshot%202.jpg" width="250" >   <img src="app/src/main/res/drawable/Phone%20Screenshot%203.jpg" width="250" >   
 
+<pre>
+App is live at Google Play
+</pre>
+https://play.google.com/store/apps/details?id=com.languagexx.simplenotes
+
+
+# Thanks
+Actively looking for oppurtunity in Android
+<br>
+prakashshukla1820@gmail.com
+
 
