@@ -2,10 +2,13 @@ package com.languagexx.simplenotes
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.languagexx.simplenotes.helper.ButtonColor
 import kotlinx.android.synthetic.main.activity_add.*
 
 //Activity for adding new note
@@ -17,56 +20,46 @@ class AddActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
-
-
-        //Save note button onclick
-        btnAdd.setOnClickListener {
-
-            //Geeting the values from editext
-            val title = addTitle.text.toString()
-            val description = addDescription.text.toString()
-            val tag = addTag.text.toString()
-
-            //sending the values via intent
-            val addIntent = Intent()
-            addIntent.putExtra("title", title)
-            addIntent.putExtra("description", description)
-            addIntent.putExtra("tag", tag)
-            if(color==null){
-                addIntent.putExtra("color", "#ffffff")
-            }
-            else{
-                addIntent.putExtra("color", color)
-            }
-
-            setResult(Activity.RESULT_OK, addIntent)
-            finish()
-        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    //color buttons
+    //button for color
     fun buttonColor(view: View) {
         val id = view.id
-        if (id == R.id.btncolorLightBrown) {
-            cardView.setBackgroundColor(resources.getColor(R.color.colorBrown))
-            color = "#A1887F"
+        val colorId = ButtonColor.buttonColor(id)
+        color = "#"+Integer.toHexString(ContextCompat.getColor(this,colorId))
+        cardView.setBackgroundColor(Color.parseColor(color))
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        saveNote()
+        return true
+    }
+
+    override fun onBackPressed() {
+        saveNote()
+    }
+
+    private fun saveNote(){
+        //Geeting the values from editext
+        val title = addTitle.text.toString()
+        val description = addDescription.text.toString()
+        val tag = addTag.text.toString()
+
+        //sending the values via intent
+        val addIntent = Intent()
+        addIntent.putExtra("title", title)
+        addIntent.putExtra("description", description)
+        addIntent.putExtra("tag", tag)
+        if(color==null){
+            addIntent.putExtra("color", "#ffffff")
         }
-        else if (id == R.id.btncolorPink) {
-            cardView.setBackgroundColor(resources.getColor(R.color.colorPink))
-            color = "#E880FC"
+        else{
+            addIntent.putExtra("color", color)
         }
-        else if (id == R.id.btncolorYellow) {
-            cardView.setBackgroundColor(resources.getColor(R.color.colorYellow))
-            color = "#FFC400"
-        }
-        else if (id == R.id.btncolorLightBlue) {
-            cardView.setBackgroundColor(resources.getColor(R.color.colorLightBlue))
-            color=  "#BBDEFB"
-        }
-        else if (id == R.id.btncolorBlue) {
-            cardView.setBackgroundColor(resources.getColor(R.color.colorBlue))
-            color= "#64FFDA"
-        }
+
+        setResult(Activity.RESULT_OK, addIntent)
+        finish()
     }
 
 

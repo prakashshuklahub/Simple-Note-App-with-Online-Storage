@@ -9,8 +9,8 @@ import com.languagexx.simplenotes.entity.Note
 @Dao
 interface NoteDao {
 
-    @Insert
-    fun insert(note: Note):Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(note: Note): Long
 
     @Update
     fun update(note: Note)
@@ -19,5 +19,9 @@ interface NoteDao {
     fun delete(note: Note)
 
     @Query("select * from tbl_note")
-    fun getAllNotes():LiveData<List<Note>>
+    fun getAllNotes(): LiveData<List<Note>>
+
+    @Query("delete from tbl_note")
+    fun deleteAllNotes()
+
 }

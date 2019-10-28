@@ -1,6 +1,8 @@
 package com.languagexx.simplenotes
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -23,9 +25,10 @@ class LoginClass: AppCompatActivity() {
 
     val RC_SIGN_IN = 1
     val TAG = "LoginActivity"
-    lateinit var mGoogleSignInClient: GoogleSignInClient
+
     companion object{
         lateinit var auth: FirebaseAuth
+        lateinit var mGoogleSignInClient: GoogleSignInClient
     }
 
 
@@ -34,7 +37,7 @@ class LoginClass: AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         //first we intialized the FirebaseAuth object
-        auth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance()
 
         //Then we need a GoogleSignInOptions object
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -43,7 +46,7 @@ class LoginClass: AppCompatActivity() {
             .build()
 
         //Then we will get the GoogleSignInClient object from GoogleSignIn class
-         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
         sign_in_button.setOnClickListener {
             signIn()
@@ -55,7 +58,7 @@ class LoginClass: AppCompatActivity() {
         //if the user is already signed in  we will close this activity and take the user to profile activity
         if (auth.getCurrentUser() != null) {
             finish()
-            startActivity(Intent(this, ProfileActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
     }
@@ -72,10 +75,9 @@ class LoginClass: AppCompatActivity() {
                 OnCompleteListener<AuthResult> { task ->
                     if (task.isSuccessful) {
                         Log.d(TAG, "signInWithCredential:success")
-                        val user = auth.getCurrentUser()
-                        Toast.makeText(this, "User Signed In", Toast.LENGTH_SHORT)
+                        Toast.makeText(this, "Welcome "+ auth.currentUser?.displayName, Toast.LENGTH_SHORT)
                             .show()
-                        startActivity(Intent(this, ProfileActivity::class.java))
+                        startActivity(Intent(this, MainActivity::class.java))
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -108,14 +110,20 @@ class LoginClass: AppCompatActivity() {
             try {
                 //Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
-
                 //authenticating with firebase
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
-                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                 if(netConnection()==false){
+                     Toast.makeText(this, "No Internet", Toast.LENGTH_SHORT).show()
+                 }
             }
 
         }
+    }
+    private fun netConnection(): Boolean {
+        val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val ni = cm.activeNetworkInfo
+        return ni != null && ni.isConnected
     }
 
 }

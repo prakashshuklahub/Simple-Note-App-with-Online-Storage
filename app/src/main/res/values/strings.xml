@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Simple Notes</string>
-    <string name="desc">This is our descrption Note \n Lets talk about this App</string>
+    <string name="desc">Write Description for your note</string>
 </resources>

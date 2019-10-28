@@ -27,9 +27,13 @@ class NoteAdapter(val note: List<Note>, val recycleClick: RecycleClick) :
         val note = note.get(position)
         holder.txtTitle?.text = note.title
         holder.txtDescription?.text = note.description
-        holder.txtTag?.text = note.tag
+        if(note.tag.equals("")){
+            holder.cardViewTag?.visibility = View.GONE
+        }else{
+            holder.txtTag?.text = note.tag
+            holder.cardViewTag?.setBackgroundColor(Color.parseColor(note.color))
+        }
         holder.cardView?.setBackgroundColor(Color.parseColor(note.color))
-        holder.cardViewTag?.setBackgroundColor(Color.parseColor(note.color))
     }
 
 

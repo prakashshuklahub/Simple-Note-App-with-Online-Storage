@@ -5,10 +5,25 @@
     <color name="colorAccent">#D81B60</color>
 
 
-    <color name="colorPink">#E880FC</color>
-    <color name="colorBlue">#64FFDA</color>
-    <color name="colorLightBlue">#BBDEFB</color>
-    <color name="colorYellow">#FFC400</color>
-    <color name="colorBrown">#A1887F</color>
+    <color name="one">#FFEBEE</color>
+    <color name="two">#FCE4EC</color>
+    <color name="three">#F3E5F5</color>
+    <color name="four">#FF8A80</color>
+    <color name="five">#FF80AB</color>
+    <color name="six">#EA80FC</color>
+    <color name="seven">#D1C4E9</color>
+    <color name="eight">#C5CAE9</color>
+    <color name="nine">#BBDEFB</color>
+    <color name="ten">#B3E5FC</color>
+    <color name="eleven">#B2EBF2</color>
+    <color name="twelve">#B2DFDB</color>
+    <color name="thirteen">#84FFFF</color>
+    <color name="fourteen">#A5D6A7</color>
+    <color name="fifteen">#C5E1A5</color>
+    <color name="sixteen">#E6EE9C</color>
+    <color name="seventeen">#FFF59D</color>
+    <color name="eighteen">#FFE082</color>
+    <color name="nineteen">#FFCCBC</color>
+    <color name="twenty">#FFFFFF</color>
 
 </resources>

@@ -27,10 +27,16 @@ class Repository(app:Application) {
         updateAsync(noteDao).execute(note)
     }
 
+    fun deleteAllNotes(){
+        deleteAllAsync(noteDao).execute()
+    }
+
     //function to get all notes in database
     fun getAllNotes():LiveData<List<Note>>{
        return getAllNotesAsync(noteDao).execute().get()
     }
+
+
 
     //background operation to insert note
     class insertAsync(noteDao: NoteDao?):AsyncTask<Note,Void,Long?>(){
@@ -40,7 +46,7 @@ class Repository(app:Application) {
         }
     }
 
-    //background operation to insert note
+    //background operation to delete note
     class deleteAsync(noteDao: NoteDao?):AsyncTask<Note,Void,Unit>(){
         var noteDao = noteDao
         override fun doInBackground(vararg params: Note){
@@ -48,11 +54,19 @@ class Repository(app:Application) {
         }
     }
 
-    //background operation to insert note
+    //background operation to  note
     class updateAsync(noteDao: NoteDao?):AsyncTask<Note,Void,Unit>(){
         var noteDao = noteDao
         override fun doInBackground(vararg params: Note){
             noteDao?.update(params[0])
+        }
+    }
+
+    //background operation to  note
+    class deleteAllAsync(noteDao: NoteDao?):AsyncTask<Unit,Unit,Unit>(){
+        var noteDao = noteDao
+        override fun doInBackground(vararg params:Unit){
+            noteDao?.deleteAllNotes()
         }
     }
 
