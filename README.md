@@ -34,7 +34,7 @@ Proudly 💪 made in Kotlin
 <td> <img src="app/src/main/res/drawable/add.gif" width="150" ></td>
 <td> <img src="app/src/main/res/drawable/edit2.gif" width="150" ></td>
 <td> <img src="app/src/main/res/drawable/delete.gif" width="150" ></td>
-    <td> <img src="app/src/main/res/drawable/delete.gif" width="150" ></td>
+ 
     <td> <img src="app/src/main/res/drawable/Screenshot_2020-02-24-14-09-33-108_com.languagexx.simplenotes.jpg" width="150"</td>
         <td> <img src="app/src/main/res/drawable/Screenshot 2020-02-24 at 2.57.09 PM.png" width="150" ></td>
     
