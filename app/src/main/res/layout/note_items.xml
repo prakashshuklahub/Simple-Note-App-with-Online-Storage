@@ -37,17 +37,11 @@
                 android:textSize="18sp"
                 android:textStyle="italic" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewTag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
             <TextView
                 android:paddingLeft="4dp"
                 android:paddingEnd="4dp"
                 android:paddingStart="4dp"
                 android:paddingRight="4dp"
-                android:background="@drawable/tag_style"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
@@ -55,10 +49,9 @@
                 android:id="@+id/txtTag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tag"
+                android:text="Tagkkkkk"
                 android:textSize="18sp"
                 android:textStyle="italic" />
-            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

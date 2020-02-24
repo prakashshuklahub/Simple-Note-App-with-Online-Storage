@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/listFragment">
+
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.languagexx.simplenotes.ui.main.ListFragment"
+        android:label="ListFragment">
+        <action
+            android:id="@+id/action_listFragment_to_addFragment"
+            app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_editFragment"
+            app:destination="@id/editFragment"></action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.languagexx.simplenotes.ui.main.AddFragment"
+        android:label="AddFragment" />
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.languagexx.simplenotes.ui.main.EditFragment"
+        android:label="EditFragment">
+        <argument
+            android:name="note"
+            app:argType="com.languagexx.simplenotes.persistence.Note"
+            app:nullable="true" />
+    </fragment>
+</navigation>
